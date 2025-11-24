@@ -1,67 +1,120 @@
-PyTorch Wheels for DGX Spark (aarch64 / Python 3.10 / CUDA 13.0)
+# PyTorch Wheels for DGX Spark
 
-This repository contains backup copies of PyTorch, Torchvision, TorchAudio wheel files (.whl) and their dependencies that were confirmed working on an NVIDIA DGX Spark system with the following configuration:
+**Architecture:** aarch64 • **Python:** 3.10 • **CUDA:** 13.0
 
-Hardware: NVIDIA DGX Spark (Blackwell GB10 GPU, aarch64 architecture)
+This repository contains backup copies of **PyTorch**, **Torchvision**, **Torchaudio**, and related dependency wheels confirmed working on an **NVIDIA DGX Spark** system.
 
-Operating System: Ubuntu 24.04.3 LTS
+---
 
-Python: 3.10.14 (Managed via pyenv)
+## System Configuration (Verified)
 
-CUDA Toolkit: 13.0 (Installed via apt)
+| Component         | Details                                        |
+| ----------------- | ---------------------------------------------- |
+| **Hardware**      | NVIDIA DGX Spark (Blackwell GB10 GPU, aarch64) |
+| **OS**            | Ubuntu 24.04.3 LTS                             |
+| **Python**        | 3.10.14 (via pyenv)                            |
+| **CUDA Toolkit**  | 13.0 (installed via `apt`)                     |
+| **NVIDIA Driver** | 580.95.05                                      |
+| **Date Verified** | October 25, 2025                               |
 
-NVIDIA Driver: 580.95.05
+---
 
-Date Verified: October 25, 2025
+## Purpose
 
-Purpose
+This repository serves as a **backup** of specific wheel files in case:
 
-These files serve as a backup in case the specific combination becomes unavailable from the official download sources or if offline installation is required. The primary method should always be to install directly using pip and the appropriate index URL.
+* the official download source becomes unavailable, or
+* an **offline installation** is required.
 
-Files Included
+> **Note:** When possible, always prefer installing from the official PyTorch index using `pip`.
 
-This repository contains the wheel files for:
+---
 
-torch-2.9.0+cu130-cp310-cp310-manylinux_2_28_aarch64.whl
+## Included Files
 
-torchvision-0.24.0-cp310-cp310-manylinux_2_28_aarch64.whl
+This repository includes wheel files for:
 
-torchaudio-2.9.0-cp310-cp310-manylinux_2_28_aarch64.whl
+* `torch-2.9.0+cu130-cp310-cp310-manylinux_2_28_aarch64.whl`
+* `torchvision-0.24.0-cp310-cp310-manylinux_2_28_aarch64.whl`
+* `torchaudio-2.9.0-cp310-cp310-manylinux_2_28_aarch64.whl`
+* Supporting dependencies (e.g., `numpy`, `nvidia-*`) downloaded together using:
 
-Associated dependencies (numpy, nvidia-*, etc.) downloaded during the same pip download operation.
+```bash
+pip download --index-url https://download.pytorch.org/whl/cu130
+```
 
-Source: The files were originally downloaded using pip download --index-url https://download.pytorch.org/whl/cu130.
+---
 
-Installation from Local Wheels
+## Installation from Local Wheels
 
-IMPORTANT: These wheel files are very large (several hundred MB each). This repository uses Git Large File Storage (LFS). You must have Git LFS installed on your system before cloning to download the actual wheel files instead of just pointers.
+### ⚠️ Important: Git LFS Required
 
-Install Git LFS: If you don't have it, install it (e.g., sudo apt install git-lfs on Debian/Ubuntu) and run git lfs install --system once.
+These wheels are **large (hundreds of MB)** and stored via **Git Large File Storage (LFS)**.
 
-Ensure Prerequisites: Make sure your target system matches the configuration listed above (especially Python 3.10 and CUDA 13.0).
+Before cloning:
 
-Clone Repository: Clone this repository using git clone <repo-url>. Git LFS should automatically download the large wheel files during the clone process.
+```bash
+sudo apt install git-lfs     # or your distro's equivalent
+git lfs install --system
+```
 
-Navigate to Directory: Open a terminal in the directory containing the .whl files.
+---
 
-Install: Use pip to install the wheels. It's often best to install PyTorch first, then the others. You might need to install dependencies manually or let pip handle them if network access is available. A simple approach is:
+## Installation Steps
 
-# Ensure your Python 3.10 environment is active
-pip install numpy-*.whl # Install numpy first if needed by others
-pip install nvidia_*.whl # Install NVIDIA helper libraries
+### 1. Ensure prerequisites
+
+Your target system should match the configuration listed above—especially:
+
+* Python **3.10**
+* CUDA **13.0**
+
+---
+
+### 2. Clone the repository
+
+```bash
+git clone <repo-url>
+```
+
+Git LFS will automatically download the real wheel files.
+
+---
+
+### 3. Install wheels
+
+Activate your Python 3.10 environment and run:
+
+```bash
+# (optional) install base dependencies first
+pip install numpy-*.whl
+pip install nvidia_*.whl
+
+# install PyTorch and related packages
 pip install torch-*.whl torchvision-*.whl torchaudio-*.whl
-pip install *.whl # Install remaining dependencies
 
+# install any remaining dependencies
+pip install *.whl
+```
 
-(Adjust the order if dependency errors occur.)
+> Adjust order if dependency errors occur.
 
-Verify Installation:
+---
 
-python -c "import torch; print(f'PyTorch version: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}')"
+## Verify Installation
 
+```bash
+python -c "import torch; print('PyTorch version:', torch.__version__); print('CUDA available:', torch.cuda.is_available())"
+```
 
-The output should show the correct version and CUDA available: True.
+Expected output:
 
-Disclaimer
+* Correct PyTorch version
+* `CUDA available: True`
 
-These files are provided as-is without warranty. Always prefer installing packages from official sources (pip install with index URLs) when possible.
+---
+
+## Disclaimer
+
+These files are provided **as-is**, with no warranty.
+For the most up-to-date and secure installations, always use the official PyTorch distribution channels when available.
